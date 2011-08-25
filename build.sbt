@@ -12,6 +12,8 @@ version <<= sbtVersion(v => v)
 
 resolvers += "Siasia github repo" at "http://siasia.github.com/maven2"
 
+resolvers += Resolver.url("Typesafe nightlies", url("https://typesafe.artifactoryonline.com/typesafe/ivy-snapshots/"))(Resolver.ivyStylePatterns)
+
 libraryDependencies += "net.sf.proguard" % "proguard" % "4.4"
 
 scalacOptions += "-deprecation"
