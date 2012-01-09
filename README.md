@@ -1,16 +1,14 @@
 ##Usage
 
-Requires [XSBT](http://github.com/harrah/xsbt/tree/0.9).
+Requires [XSBT](http://github.com/harrah/xsbt).
 
-Maven artifacts are created for 0.9.4, 0.9.6, 0.9.7, 0.9.8, 0.9.9, 0.9.10, 0.10.0 and 0.10.1 versions.
+Maven artifacts are created for 0.11.0 version.
 
 ###Adding the plugin to your build
 
-To use the plugin in a project, you need to create `project/plugins/build.sbt`:
+To use the plugin in a project, you need to create `project/plugins/build.sbt`(**since sonatype doesn't allow non standard maven layout we can't use `addSbtPlugin` here**):
 
-    resolvers += "Proguard plugin repo" at "http://siasia.github.com/maven2"
-
-    libraryDependencies <+= sbtVersion("com.github.siasia" %% "xsbt-proguard-plugin" % _)
+    libraryDependencies <+= sbtVersion(v => "com.github.siasia" %% "xsbt-proguard-plugin" % (v+"-0.1.1"))
 		
 This adds plugin version corresponding to your sbt version into your build.
 
@@ -25,7 +23,9 @@ In case if you have a xsbt version different from one used in Maven artifacts or
     
 ###Injecting the Plugin into desired project
 
-Inject the proguard settings into your project through `build.sbt`:
+####1. Using build.sbt
+
+To inject the proguard settings into your project through `build.sbt`:
 
     seq(ProguardPlugin.proguardSettings :_*)
     
@@ -33,7 +33,24 @@ Add proguard keep options in `build.sbt`. Main class keep example:
 
     proguardOptions += keepMain("Test")
 
-This will add a `proguard` action which will run Proguard and generate output in `target/<scala-version>/<project-name-version>.min.jar`. You may consult `min-jar-path` setting to see the actual path:
+####2. In your Build.scala
+
+Alternatively, you can configure the proguard settings within your project's `Build.scala` or equivalent:
+
+    import ProguardPlugin._
+    lazy val proguard = proguardSettings ++ Seq(
+      proguardOptions := Seq(keepMain("Test"))
+    )
+    
+And then include `proguard` in your `Project` definition as usual:
+
+    lazy val myProject = Project("my-project", file("."))
+      .settings(proguard: _*)
+      ...
+
+####Test
+
+Either of these will add a `proguard` action which will run Proguard and generate output in `target/<scala-version>/<project-name-version>.min.jar`. You may consult `min-jar-path` setting to see the actual path:
 
     > min-jar-path
     [info] /home/siasia/projects/xsbt-proguard-test/target/scala-2.8.1.final/root_2.8.1-0.1.min.jar
