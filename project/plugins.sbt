@@ -2,4 +2,7 @@ resolvers += Resolver.url("Typesafe Repo", url("http://repo.typesafe.com/typesaf
 
 resolvers += Resolver.url("Typesafe nightlies", url("https://typesafe.artifactoryonline.com/typesafe/ivy-snapshots/"))(Resolver.ivyStylePatterns)
 
-libraryDependencies <+= sbtVersion("org.scala-tools.sbt" %% "scripted-plugin" % _)
+libraryDependencies <+= sbtVersion {
+  case x if x startsWith "0.11." => "org.scala-tools.sbt" %% "scripted-plugin" % x
+  case x                         => "org.scala-tools.sbt" %% "scripted-plugin" % x
+}
