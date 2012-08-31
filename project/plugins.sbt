@@ -5,5 +5,6 @@ resolvers += Resolver.url("Typesafe nightlies", url("https://typesafe.artifactor
 libraryDependencies <+= sbtVersion {
   case "0.11.2" => "org.scala-tools.sbt" %% "scripted-plugin" % "0.11.2"
   case "0.11.3" => "org.scala-sbt" %% "scripted-plugin" % "0.11.3"
-  case x        => "org.scala-sbt" %% "sbt-scripted" % x
+  case x        => "org.scala-sbt" % "scripted-plugin" % x
 }
+

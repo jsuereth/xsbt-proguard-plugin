@@ -2,7 +2,7 @@ import sbt._
 
 import Project.Initialize
 import Keys._
-
+import CrossVersion.{binaryScalaVersion}
 import proguard.{Configuration=>ProGuardConfiguration, ProGuard, ConfigurationParser}
 
 import java.io.File
@@ -85,7 +85,10 @@ object ProguardPlugin extends Plugin {
 	}
 
 	val proguardSettings = Seq(
-		minJarPath <<= (crossTarget, projectID, artifact, scalaVersion, artifactName) { (t, module, a, sv, toString) => t / toString(sv, module.copy(revision = module.revision + ".min"), a) asFile },
+		minJarPath <<= (crossTarget, projectID, artifact, scalaVersion, artifactName) { (t, module, a, sv, toString) => 
+      val scalaversion = ScalaVersion(sv, binaryScalaVersion(sv))
+      t / toString(scalaversion, module.copy(revision = module.revision + ".min"), a) asFile 
+    },
 		proguardOptions := Nil,
 		makeInJarFilter := { (file) => "!META-INF/MANIFEST.MF" },
 		proguardDefaultArgs := Seq("-dontwarn", "-dontoptimize", "-dontobfuscate"),
