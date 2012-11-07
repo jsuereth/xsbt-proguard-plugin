@@ -44,8 +44,8 @@ object ProguardPlugin extends Build {
 		},
 		name := "xsbt-proguard-plugin",
 		organization := "com.github.siasia",
-		version <<= sbtVersion(_ + "-0.1.2"),
-		libraryDependencies += "net.sf.proguard" % "proguard-base" % "4.7",
+		version <<= sbtVersion(_ + "-0.1.3"),
+		libraryDependencies += "net.sf.proguard" % "proguard-base" % "4.8",
 		scalacOptions += "-deprecation",
 		publishMavenStyle := true,
 		publishTo <<= (version) {
